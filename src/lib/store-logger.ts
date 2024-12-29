@@ -27,7 +27,7 @@ interface StoreLoggerState {
 
 export const useLoggerStore = create<StoreLoggerState>((set, get) => ({
   maxLogs: 500,
-  logs: [], //mockLogs,
+  logs: [],
   log: ({ date, type, message }: StreamingLog) => {
     set((state) => {
       const prevLog = state.logs.at(-1);
@@ -56,10 +56,5 @@ export const useLoggerStore = create<StoreLoggerState>((set, get) => ({
       };
     });
   },
-
-  clearLogs: () => {
-    console.log("clear log");
-    set({ logs: [] });
-  },
-  setMaxLogs: (n: number) => set({ maxLogs: n }),
+  clearLogs: () => set({ logs: [] }),
 }));

@@ -104,48 +104,27 @@
 }
 
 .control-tray {
-  position: absolute;
+  position: fixed;
   bottom: 0;
-  left: 50%;
-  transform: translate(-50%, 0);
-  display: inline-flex;
+  left: 0;
+  right: 0;
+  display: flex;
   justify-content: center;
-  align-items: flex-start;
-  gap: 8px;
-  padding-bottom: 18px;
+  align-items: center;
+  padding: 1rem;
+  gap: 1rem;
+  background: var(--Neutral-5);
 
-  .disabled .action-button,
-  .action-button.disabled {
-    background: rgba(0, 0, 0, 0);
-    border: 1px solid var(--Neutral-30, #404547);
-    color: var(--Neutral-30);
+  .actions-nav {
+    display: flex;
+    gap: 1rem;
+    align-items: center;
   }
 
   .connection-container {
     display: flex;
-    flex-direction: column;
-    justify-content: center;
     align-items: center;
-    gap: 4px;
-
-    .connection-button-container {
-      border-radius: 27px;
-      border: 1px solid var(--Neutral-30);
-      background: var(--Neutral-5);
-      padding: 10px;
-    }
-
-    .text-indicator {
-      font-size: 11px;
-      color: var(--Blue-500);
-      user-select: none;
-    }
-
-    &:not(.connected) {
-      .text-indicator {
-        opacity: 0;
-      }
-    }
+    gap: 0.5rem;
   }
 }
 

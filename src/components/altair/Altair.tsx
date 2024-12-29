@@ -13,12 +13,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { type FunctionDeclaration, SchemaType } from "@google/generative-ai";
-import { useEffect, useRef, useState, memo } from "react";
-import vegaEmbed from "vega-embed";
+import { useEffect, memo } from "react";
 import { useLiveAPIContext } from "../../contexts/LiveAPIContext";
-import { ToolCall } from "../../multimodal-live-types";
+import { INITIAL_PROMPT } from '../../config/prompts';
 
+/* Comment out visualization-related declarations
 const declaration: FunctionDeclaration = {
   name: "render_altair",
   description: "Displays an altair graph in json format.",
@@ -34,10 +33,10 @@ const declaration: FunctionDeclaration = {
     required: ["json_graph"],
   },
 };
+*/
 
 function AltairComponent() {
-  const [jsonString, setJSONString] = useState<string>("");
-  const { client, setConfig } = useLiveAPIContext();
+  const { setConfig } = useLiveAPIContext();
 
   useEffect(() => {
     setConfig({
@@ -45,24 +44,26 @@ function AltairComponent() {
       generationConfig: {
         responseModalities: "audio",
         speechConfig: {
-          voiceConfig: { prebuiltVoiceConfig: { voiceName: "Aoede" } },
+          voiceConfig: { prebuiltVoiceConfig: { voiceName: "Puck" } },
         },
       },
       systemInstruction: {
         parts: [
           {
-            text: 'You are my helpful assistant. Any time I ask you for a graph call the "render_altair" function I have provided you. Dont ask for additional information just make your best judgement.',
+            text: INITIAL_PROMPT,
           },
         ],
       },
       tools: [
         // there is a free-tier quota for search
         { googleSearch: {} },
-        { functionDeclarations: [declaration] },
+        // Comment out visualization tools
+        // { functionDeclarations: [declaration] },
       ],
     });
   }, [setConfig]);
 
+  /* Comment out visualization-related useEffects
   useEffect(() => {
     const onToolCall = (toolCall: ToolCall) => {
       console.log(`got toolcall`, toolCall);
@@ -73,8 +74,6 @@ function AltairComponent() {
         const str = (fc.args as any).json_graph;
         setJSONString(str);
       }
-      // send data for the response of your tool call
-      // in this case Im just saying it was successful
       if (toolCall.functionCalls.length) {
         setTimeout(
           () =>
@@ -101,7 +100,10 @@ function AltairComponent() {
       vegaEmbed(embedRef.current, JSON.parse(jsonString));
     }
   }, [embedRef, jsonString]);
-  return <div className="vega-embed" ref={embedRef} />;
+  */
+
+  // Return empty div since we don't need visualization
+  return <div />;
 }
 
 export const Altair = memo(AltairComponent);

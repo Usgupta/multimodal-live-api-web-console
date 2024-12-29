@@ -207,22 +207,6 @@ const CustomPlainTextLog = (msg: string) => () => (
   <PlainTextMessage message={msg} />
 );
 
-export type LoggerFilterType = "conversations" | "tools" | "none";
-
-export type LoggerProps = {
-  filter: LoggerFilterType;
-};
-
-const filters: Record<LoggerFilterType, (log: StreamingLog) => boolean> = {
-  tools: (log: StreamingLog) =>
-    isToolCallMessage(log.message) ||
-    isToolResponseMessage(log.message) ||
-    isToolCallCancellationMessage(log.message),
-  conversations: (log: StreamingLog) =>
-    isClientContentMessage(log.message) || isServerContenteMessage(log.message),
-  none: () => true,
-};
-
 const component = (log: StreamingLog) => {
   if (typeof log.message === "string") {
     return PlainTextMessage;
@@ -254,19 +238,23 @@ const component = (log: StreamingLog) => {
   return AnyMessage;
 };
 
-export default function Logger({ filter = "none" }: LoggerProps) {
-  const { logs } = useLoggerStore();
-
-  const filterFn = filters[filter];
+export default function Logger() {
+  const logs = useLoggerStore((state) => state.logs);
 
   return (
     <div className="logger">
       <ul className="logger-list">
-        {logs.filter(filterFn).map((log, key) => {
-          return (
-            <LogEntry MessageComponent={component(log)} log={log} key={key} />
-          );
-        })}
+        {logs
+          .filter((log) => {
+            // Filter out client.realtimeInput and server.audio logs
+            if (log.type === 'client.realtimeInput' || log.type === 'server.audio') {
+              return false;
+            }
+            return true;
+          })
+          .map((log, i) => (
+            <LogEntry key={i} MessageComponent={component(log)} log={log} />
+          ))}
       </ul>
     </div>
   );

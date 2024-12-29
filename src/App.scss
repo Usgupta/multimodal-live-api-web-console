@@ -119,20 +119,7 @@ body {
   display: flex;
   height: 100vh;
   width: 100vw;
-
-  a,
-  a:visited,
-  a:active {
-    color: var(--gray-300);
-  }
-
-  .disabled {
-    pointer-events: none;
-
-    >* {
-      pointer-events: none;
-    }
-  }
+  justify-content: center;
 
   main {
     position: relative;
@@ -152,20 +139,19 @@ body {
     align-items: center;
     justify-content: center;
   }
-
-  .function-call {
-    position: absolute;
-    top: 0;
-    width: 100%;
-    height: 50%;
-    overflow-y: auto;
-  }
 }
 
-/* video player */
+/* Comment out sidebar related styles
+.side-panel {
+  ...
+}
+*/
+
+/* Comment out video player styles since we're not using them
 .stream {
   flex-grow: 1;
   max-width: 90%;
   border-radius: 32px;
   max-height: fit-content;
 }
+*/

@@ -270,7 +270,8 @@ export class MultimodalLiveClient extends EventEmitter<MultimodalLiveClientEvent
       },
     };
     this._sendDirect(data);
-    this.log(`client.realtimeInput`, message);
+    // Comment out logging for audio streaming
+    // this.log(`client.realtimeInput`, message);
   }
 
   /**
